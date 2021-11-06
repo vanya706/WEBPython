@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{%block title%}Мої досягнення{% endblock %}
+
+{%block menu%}
+{%for elem in menu%}
+  <a href="{{menu[elem]}}">{{elem}}</a><br>
+{% endfor %}
+{% endblock %}
+
+{%block achievement%}
+<style type="text/css">
+  body{
+    background-image: url('../static/img/fon.png');
+  }
+</style>
+<img class="achievement_img" src="static/img/achievement.jpg">
+<div class="my_achievement">
+    <ul>
+      <li>I can swimming.</li><br>
+      <li>I can play football.</li><br>
+      <li>I can sleep.</li><br>
+      <li>I can develop software on Java.</li><br>
+      <li>I can develop software on Spring.</li><br>
+      <li>I can develop software on Python.</li><br>
+    </ul>
+</div>
+{% endblock %}
