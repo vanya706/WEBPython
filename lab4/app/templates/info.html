@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{%block title%}Short about me{% endblock %}
+{%block info%}
+<style type="text/css">
+  body{
+    background-image: url('../static/img/fon.png');
+  }
+</style>
+<img src="static/img/abouting.jpg">
+<div class="info_about_me">
+  Hello!
+  I am Ivan Mostovyi.<br>
+  I am {{age}} years old.<br>
+  I was born in the Zhuravno<br>
+  I am a Java Developer and Bachelor's degree at Vasyl Stefanyk Precarpathian National University<br>
+  Specialty: Software engineering.<br>
+  Course: 3.<br>
+  Group: ІПЗ-31<br>
+</div>
+{% endblock %}

@@ -1,0 +1,3 @@
+{"name": "Ivan Mostovyi", "email": "vanya.mostoviy@gmail.com", "body": "Hello!\r\nI am Ivan!\r\nAnd it is my message body!"}
+{"name": "Ivan Mostovyi", "email": "vanya.mostoviy@gmail.com", "body": "hello again!"}
+{"name": "Ivan Mostovyi", "email": "test@gmail.com", "body": "aropvmnaertiuvnaeriuar"}
