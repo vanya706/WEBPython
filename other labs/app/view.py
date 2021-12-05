@@ -3,16 +3,18 @@ import os
 import sys
 from datetime import datetime, date
 
+from app import app, db
 from app.forms import ContactForm
 from flask import render_template, request, redirect, url_for, flash, session
+from .models import User
 
-from app import app
-from .forms import DataForm
+from .forms import DataForm, SignUpForm, LoginForm
 from .function import write_json, validations
 
 today = date.today()
 menu = {'Main page': '/', 'Info about me': '/info', 'My achievement': '/achievement',
-        'Contact': '/contact',  'Register Cabinet':'/register_cabinet'}
+        'Contact': '/contact', 'Register Cabinet': '/register_cabinet',
+        'Users': '/users', 'SignUp': '/SignUp', 'LogIn': '/LogIn'}
 age = today.year - 2002 - ((today.month, today.day) < (3, 14))
 
 
@@ -95,3 +97,44 @@ def register_cabinet():
                            year=data_files[ses]['year'],
                            pin=data_files[ses]['pin'], serial=data_files[ses]['serial'],
                            number_doc=data_files[ses]['number_doc'])
+
+
+@app.route("/SignUp", methods=['GET', 'POST'])
+def signup():
+    form = SignUpForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, password=form.password1.data)
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Account created for {form.username.data} !', category='success')
+        return redirect(url_for('login'))
+    return render_template('signup.html', menu=menu, form_reg=form, title='Register')
+
+
+@app.route("/LogIn", methods=['GET', 'POST'])
+def login():
+    form_log = LoginForm()
+    if form_log.validate_on_submit():
+        user = User.query.filter_by(email=form_log.email.data).first()
+        if user and user.verify_password(form_log.password.data):
+            flash(f'You have been logged by username {user.email}!', category='success')
+            return redirect(url_for('login'))
+        else:
+            flash('Invalid login or password!', category='warning')
+            return redirect(url_for('login'))
+
+    return render_template('login.html', menu=menu, form_log=form_log, title='Login')
+
+
+@app.route("/users", methods=['GET', 'POST'])
+def users():
+    all_users = User.query.all()
+    count = User.query.count()
+    if count == 0:
+        return render_template('404.html', menu=menu)
+    return render_template('user_list.html', menu=menu, all_users=all_users, count=count)
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')
