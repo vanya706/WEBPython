@@ -1,0 +1,10 @@
+{
+    "mostovyi@gmail.com": {
+        "password": "http://localhost:5000/",
+        "number": "1234567",
+        "pin": "4444",
+        "year": "2021",
+        "serial": "A21",
+        "number_doc": "12345678"
+    }
+}
