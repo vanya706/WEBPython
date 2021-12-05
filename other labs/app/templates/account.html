@@ -6,8 +6,10 @@
     }
 </style>
 {% block footer %}
-<h1>{{ current_user.email }}</h1>
-<h1>{{ current_user.username }}</h1>
-<h1>{{ current_user.password }}</h1>
+<center>
+    <h3>email: {{ current_user.email }}</h3>
+    <h3>username: {{ current_user.username }}</h3>
+    <h3>password: {{ current_user.password }}</h3>
+</center>
 {% endblock %}
 {% endblock %}
