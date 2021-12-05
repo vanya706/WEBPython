@@ -1,14 +1,18 @@
-from flask import Flask, render_template, request, session, flash, json, url_for, redirect
-from datetime import datetime, date
-import sys
+import json
 import os
+import sys
+from datetime import datetime, date
+
+from app.forms import ContactForm
+from flask import render_template, request, redirect, url_for, flash, session
 
 from app import app
-from app.forms import ContactForm
-import json
+from .forms import DataForm
+from .function import write_json, validations
 
 today = date.today()
-menu = {'Main page': '/', 'Info about me': '/info', 'My achievement': '/achievement', 'Contact': '/contact'}
+menu = {'Main page': '/', 'Info about me': '/info', 'My achievement': '/achievement',
+        'Contact': '/contact',  'Register Cabinet':'/register_cabinet'}
 age = today.year - 2002 - ((today.month, today.day) < (3, 14))
 
 
@@ -67,3 +71,27 @@ def contact():
                 flash(message='Error while sending the message!')
     return render_template('contact_form.html', menu=menu, form=form, cookie_name=session.get("name"),
                            cookie_email=session.get("email"))
+
+
+@app.route("/register_cabinet", methods=['GET', 'POST'])
+def register_cabinet():
+    form = DataForm()
+    validations(form)
+    if form.validate_on_submit():
+        session['email'] = form.email.data
+        write_json(form)
+        flash('User has been written in json file')
+        return redirect(url_for('register_cabinet'))
+
+    try:
+        ses = session['email']
+    except:
+        return render_template('start.html', menu=menu, form=form)
+
+    with open('data.json') as f:
+        data_files = json.load(f)
+
+    return render_template('start.html', menu=menu, form=form, email=ses, number=data_files[ses]['number'],
+                           year=data_files[ses]['year'],
+                           pin=data_files[ses]['pin'], serial=data_files[ses]['serial'],
+                           number_doc=data_files[ses]['number_doc'])
