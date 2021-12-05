@@ -1,8 +1,9 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'Thisisasecret!'
-app.config['WTF_CRSF_ENAVLED'] = True
+app.config.from_object('config')
+db = SQLAlchemy()
 
-# do not remove
-from app import view
+from . import view, forms, function
