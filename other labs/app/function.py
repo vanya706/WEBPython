@@ -1,8 +1,9 @@
-from wtforms.validators import Length, Regexp
 import json
 
-def write_json(form):
+from wtforms.validators import Length, Regexp
 
+
+def write_json(form):
     data = {
         form.email.data: {
             'password': form.password1.data,

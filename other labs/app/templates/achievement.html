@@ -1,14 +1,8 @@
 {% extends "base.html" %}
 
-{%block title%}Мої досягнення{% endblock %}
+{%block title%}My Achievement{% endblock %}
 
-{%block menu%}
-{%for elem in menu%}
-  <a href="{{menu[elem]}}">{{elem}}</a><br>
-{% endfor %}
-{% endblock %}
-
-{%block achievement%}
+{%block content%}
 <style type="text/css">
   body{
     background-image: url('../static/img/fon.png');
