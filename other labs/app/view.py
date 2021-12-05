@@ -5,7 +5,7 @@ from datetime import datetime, date
 
 from app import app, db
 from flask import render_template, request, redirect, flash, session, url_for
-from flask_login import logout_user, login_required
+from flask_login import logout_user, login_required, login_user
 
 from .forms import DataForm, SignUpForm, LoginForm, ContactForm
 from .function import write_json, validations
@@ -95,7 +95,7 @@ def register_cabinet():
                            number_doc=data_files[ses]['number_doc'])
 
 
-@app.route("/SignUp", methods=['GET', 'POST'])
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
     if form.validate_on_submit():
@@ -107,12 +107,13 @@ def signup():
     return render_template('signup.html', form_reg=form, title='Register')
 
 
-@app.route("/LogIn", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     form_log = LoginForm()
     if form_log.validate_on_submit():
         user = User.query.filter_by(email=form_log.email.data).first()
         if user and user.verify_password(form_log.password.data):
+            login_user(user, remember=form_log.remember.data)
             flash(f'You have been logged by username {user.email}!', category='success')
             return redirect(url_for('login'))
         else:
