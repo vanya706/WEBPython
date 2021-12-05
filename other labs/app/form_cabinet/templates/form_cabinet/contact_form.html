@@ -5,12 +5,12 @@
 {%from "_render_field.html" import render_field%}
 <style type="text/css">
     body {
-        background-image: url('../static/img/fon.png');
+        background-image: url('../../../static/img/fon.png');
     }
 </style>
 <div class="form-wrapper" align="center">
 
-    <form method="POST" action="{{ url_for('contact') }}">
+    <form method="POST" action="{{ url_for('cabinet.contact_form') }}">
         {{form.csrf_token}}
         <div class="flash_message">{% for msg in get_flashed_messages() %}
             {{msg}}
