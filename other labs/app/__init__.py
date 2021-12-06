@@ -21,17 +21,16 @@ def create_app(config_name='default'):
     global db
     metadata = MetaData(naming_convention=convention)
     db = SQLAlchemy(metadata=metadata)
-    migrate = Migrate(app, db, render_as_batch=True)
 
     global login_manager
     login_manager = LoginManager(app)
-    login_manager.login_view = 'login'
+    login_manager.login_view = 'auth.login'
     login_manager.login_message_category = 'warning'
     global bcrypt
     bcrypt = Bcrypt(app)
 
-    migrate = Migrate(app, db)
     db.init_app(app)
+    migrate = Migrate(app, db, render_as_batch=True)
     migrate.init_app(app, db, render_as_batch=True)
     login_manager.init_app(app)
     bcrypt.init_app(app)

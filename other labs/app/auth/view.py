@@ -1,10 +1,15 @@
-from flask import url_for, render_template, flash, redirect, abort
+import os
+import secrets
+from datetime import datetime
+
+from PIL import Image
+from flask import url_for, render_template, flash, redirect, abort, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 
 from . import auth_blueprint
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, UpdateAccountForm, ResetPasswordForm
 from .models import User
-from .. import db
+from .. import db, bcrypt
 
 
 @auth_blueprint.route("/signup", methods=['GET', 'POST'])
@@ -47,14 +52,63 @@ def users():
     return render_template('auth/user_list.html', all_users=all_users, count=count)
 
 
-@auth_blueprint.route("/logout")
+@auth_blueprint.route("/logout", methods=['GET', 'POST'])
 def logout():
     logout_user()
     flash('You have been logged out')
     return redirect(url_for('index'))
 
 
-@auth_blueprint.route("/account")
+@auth_blueprint.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('auth/account.html')
+    form_acc = UpdateAccountForm()
+    if form_acc.validate_on_submit():
+        if form_acc.picture.data:
+            picture_file = save_picture(form_acc.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form_acc.username.data
+        current_user.email = form_acc.email.data
+        current_user.about_me = form_acc.about_me.data
+        db.session.commit()
+        flash('Your account has been update!', category='success')
+        return redirect(url_for('auth.account'))
+
+    form_acc.about_me.data = current_user.about_me
+    form_acc.username.data = current_user.username
+    form_acc.email.data = current_user.email
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('auth/account.html', image_file=image_file, form_acc=form_acc, title='Account')
+
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    f_name, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
+    output_size = (400, 400)
+
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
+
+@auth_blueprint.route("/reset-password", methods=['GET', 'POST'])
+@login_required
+def reset_password():
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        current_user.password = bcrypt.generate_password_hash(form.new_password1.data).decode('utf-8')
+        db.session.commit()
+        flash('Password changed', category='success')
+        return redirect(url_for('auth.account'))
+    return render_template('auth/reset password.html', form=form)
+
+
+@auth_blueprint.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_date = datetime.utcnow()
+        db.session.commit()

@@ -13,11 +13,17 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    image_file = db.Column(db.String(60), nullable=False, default='default.jpg')
+    about_me = db.Column(db.Text, nullable=True)
+    edit_date = db.Column(db.DateTime, default=db.func.now())
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, about_me='', image_file='default.jpg'):
         self.username = username
         self.email = email
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.about_me = about_me
+        self.image_file = image_file
+
 
     def verify_password(self, pwd):
         return bcrypt.check_password_hash(self.password, pwd)
