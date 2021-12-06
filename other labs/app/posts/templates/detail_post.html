@@ -1,0 +1,47 @@
+{% from "_render_field.html" import render_field %}
+{% extends 'base.html' %}
+{% block content %}
+<style type="text/css">
+    .fon {
+        background-image: url(../static/img/fon.png);
+    }
+
+    input {
+        width: 100%;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        border: 1px solid black;
+        border-radius: 10px;
+        resize: none;
+    }
+</style>
+<body class="fon">
+<div class="detail-post">
+    <div class="item-post">
+        <img src="/static/posts_pics/{{ pk.image_file }}" width="250px">
+        <p class="title">{{ pk.title }}</p>
+        <hr>
+        <p class="width-text">{{ pk.text }}</p>
+        <hr>
+    </div>
+    <div class="buttons">
+        {% if current_user.id == pk.post_id %}
+        <a href="{{ url_for('post.delete_post', pk=pk.id) }}">
+            <button>Delete</button>
+        </a>
+        <a href="{{ url_for('post.update_post', pk=pk.id) }}">
+            <button>Edit</button>
+        </a>
+        {% endif %}
+    </div>
+</div>
+</body>
+{% endblock %}

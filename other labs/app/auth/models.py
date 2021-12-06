@@ -1,3 +1,5 @@
+import enum
+
 from flask_login import UserMixin
 
 from .. import db, bcrypt, login_manager
@@ -24,9 +26,27 @@ class User(db.Model, UserMixin):
         self.about_me = about_me
         self.image_file = image_file
 
-
     def verify_password(self, pwd):
         return bcrypt.check_password_hash(self.password, pwd)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.password}')"
+
+
+class PostType(enum.Enum):
+    Blog = 'Blog'
+    News = 'News'
+    Publication = 'Publication'
+    Rss = 'Rss'
+    Other = 'Other'
+
+
+class Posts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    text = db.Column(db.Text, nullable=True)
+    image_file = db.Column(db.String(50), nullable=False, default='default.png')
+    created = db.Column(db.DateTime, default=db.func.now())
+    type = db.Column(db.Enum(PostType))
+    enabled = db.Column(db.Boolean, default=True, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

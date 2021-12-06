@@ -44,4 +44,7 @@ def create_app(config_name='default'):
         from .form_cabinet import cabinet_blueprint
         app.register_blueprint(cabinet_blueprint, url_prefix='/regcabinet')
 
+        from .posts import post_blueprint
+        app.register_blueprint(post_blueprint, url_prefix='/post')
+
         return app
