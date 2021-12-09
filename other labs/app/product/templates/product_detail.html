@@ -1,0 +1,52 @@
+{% from "_render_field.html" import render_field %}
+{% extends 'base.html' %}
+{% block content %}
+<style type="text/css">
+    .fon {
+        background-image: url(../static/img/fon.png);
+    }
+
+    input {
+        width: 100%;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        border: 1px solid black;
+        border-radius: 10px;
+        resize: none;
+    }
+</style>
+<body class="fon">
+<div class="detail-post">
+    <div class="item-post">
+        <p>{{ pk.name }}</p>
+        <hr>
+        <p>Ціна: {{ pk.price }}</p>
+        <p>Фірма-виробник: {{ pk.category.firm }}</p>
+        <p>Вид продукії: {{ pk.type }}</p>
+        <p>Кількість: {{ pk.number }}</p>
+        <p>Дата надходження: {{ pk.date }}</p>
+        <hr>
+    </div>
+    <div class="buttons">
+        {% if current_user.id == pk.user_id %}
+        <a href="{{ url_for('product.delete_prod', id=pk.id) }}" 
+           onclick="return confirm('Are You Sure To Delete ?')"
+           class="btn btn-danger btn-xs">
+            Delete
+        </a>
+        <a href="{{ url_for('product.edit_prod', id=pk.id) }}"> <!-- edit !-->
+            <button class="btn btn-primary">Edit</button>
+        </a>
+        {% endif %}
+    </div>
+</div>
+</body>
+{% endblock %}

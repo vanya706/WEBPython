@@ -25,7 +25,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.users') }}">Users</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('product.view_prod') }}">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('product.category_crud') }}">Category</a>
+                </li>
                 {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('product.add_prod') }}">Add product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('post.create') }}">Create Post</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.account') }}">Account</a>
                 </li>
