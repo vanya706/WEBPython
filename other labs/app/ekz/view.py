@@ -22,6 +22,24 @@ class ProductHandlerApi(Resource):
         return Product.query.get_or_404(id)
 
     @marshal_with(product_template)
+    def post(self, id):
+        data = request.get_json()
+        product_new = Product(
+            id=data['id'],
+            name=data['name'],
+            price=data['price'],
+            type=data['type'],
+            number=data['number'],
+            date=data['date'],
+            category_firm=data['category_firm'],
+            user_id=data['user_id']
+        )
+
+        db.session.add(product_new)
+        db.session.commit()
+        return product_new
+
+    @marshal_with(product_template)
     def put(self, id):
         data = request.get_json()
         product_old = Product.query.get_or_404(id)
@@ -62,25 +80,6 @@ class ProductsHandlerApi(Resource):
         return Product.query.all()
 
 
-    @marshal_with(product_template)
-    def post(self):
-        data = request.get_json()
-        product_new = Product(
-            id=data['id'],
-            name=data['name'],
-            price=data['price'],
-            type=data['type'],
-            number=data['number'],
-            date=data['date'],
-            category_firm=data['category_firm'],
-            user_id=data['user_id']
-        )
-
-        db.session.add(product_new)
-        db.session.commit()
-        return product_new
-
-
 api = Api(current_app)
 api.add_resource(ProductHandlerApi, "/api/mostovyi/product/<int:id>")
-api.add_resource(ProductsHandlerApi, "/api/mostovyi/product")
+api.add_resource(ProductsHandlerApi, "/api/mostovyi/products")
