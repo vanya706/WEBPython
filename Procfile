@@ -1,1 +1,1 @@
-web: gunicorn "run:other labs/create_app(config_name='dev')"
+web: gunicorn "app:create_app(config_name='dev')"
