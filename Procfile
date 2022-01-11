@@ -1,1 +1,1 @@
-web: gunicorn "run:create_app(config_name='dev')"
+web: gunicorn "run:app.create_app(config_name='dev')"
