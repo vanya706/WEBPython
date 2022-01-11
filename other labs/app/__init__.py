@@ -53,7 +53,7 @@ def create_app(config_name='default'):
         from .product import api_category_blueprint
         app.register_blueprint(api_category_blueprint, url_prefix='/api/category')
 
-        # from .ekz import api_ekz_blueprint
-        # app.register_blueprint(api_ekz_blueprint, url_prefix='/api/mostovyi')
+        from .ekz import api_ekz_blueprint
+        app.register_blueprint(api_ekz_blueprint, url_prefix='/api/mostovyi')
 
         return app
