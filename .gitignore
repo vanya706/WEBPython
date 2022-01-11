@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/.idea/dataSources/0f7c8ccb-227b-49df-9478-2abb8bb68e8c/storage_v2/_src_/schema/main.uQUzAA.meta
+/.idea/dataSources/a49baa90-a57e-4f0b-91c9-1ce035bb3d77/storage_v2/_src_/schema/main.uQUzAA.meta
+/.idea/dataSources/0f7c8ccb-227b-49df-9478-2abb8bb68e8c.xml
+/.idea/dataSources/a49baa90-a57e-4f0b-91c9-1ce035bb3d77.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/.gitignore
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/WEBPython.iml
