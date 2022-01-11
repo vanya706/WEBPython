@@ -12,7 +12,8 @@ age = today.year - 2002 - ((today.month, today.day) < (3, 14))
 @app.route('/')
 def index():
     return render_template('index.html',
-                           os_login=os.getlogin(),
+                           # os_login=os.getlogin(),
+                           os_login="OS_LOGIN",
                            user_agent=request.headers.get('User-Agent'),
                            version=sys.version,
                            time_now=datetime.now().strftime("%H:%M"))
